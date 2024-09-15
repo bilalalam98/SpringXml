@@ -1,0 +1,95 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id = "alien" class="org.trmab.Alien" scope="singleton" autowire="byType">
+<!--        to assign the value to age this will call the setter method mehtion is alien to assign the value-->
+        <property name="age" value="21"></property>
+<!--        <property name="lap" ref="lap"></property>-->
+<!--        we can also write it like below too use Case is i dont want to make laptop available for everyother bean and only for
+           alien so now laptop bean is actually an inner bean for alien
+         <property name="lap">
+           <bean id = "com1" class="org.trmab.Laptop" primary="true">
+           </bean>
+         </property>
+
+-->
+<!--        now we have changes lap and desktop with interface implementation of computer so-->
+<!--        <property name="com" ref="lap"></property>-->
+<!--        now what if i change the ref and below bean for Laptop to com it will work right lets do it -->
+<!--        <property name="com" ref="com"></property>-->
+<!--            now i want spring to handle this and dont wnat to wrtie above line for this i have to mention in bean
+                that autowire byName after this i want need above property-->
+
+
+
+<!--        now lets set age through the contructor of lap but its for one what if we have to var-->
+<!--        <constructor-arg value="21"></constructor-arg>-->
+
+
+<!--        lets inject lap to the alient we wont use the value as its the ref without this this will give nul pointer exception-->
+<!--        <property name="lap" ref="lap"></property>-->
+
+        <!--        now lets pass age and lap too this is known and contructor injection but make sure to pass it in same sequesnce-->
+<!--        or pass the type to it-->
+<!--        <constructor-arg value="21" />-->
+<!--        <constructor-arg ref="lap"/>-->
+
+<!--        now this will work what if we have two int type obejct for that we can pass index like below or name-->
+<!--        <constructor-arg type="org.trmab.Laptop" ref="lap"/>-->
+<!--        <constructor-arg type="int" value="21" />-->
+
+<!--     through index-->
+<!--        <constructor-arg index="1" type="org.trmab.Laptop" ref="lap"/>-->
+<!--        <constructor-arg index="0" type="int" value="21" />-->
+
+<!--     through name-->
+<!--        <constructor-arg name="lap" type="org.trmab.Laptop" ref="lap"/>-->
+<!--        <constructor-arg name="age" type="int" value="21" />-->
+
+    </bean>
+
+<!--    <bean id = "lap" class="org.trmab.Laptop">-->
+<!--    </bean>-->
+<!--    <bean id = "com" class="org.trmab.Laptop">-->
+<!--    </bean>-->
+<!--    -->
+<!--    <bean id = "com1" class="org.trmab.Desktop">-->
+<!--    </bean>-->
+
+<!--    now lets take an other example the above code works fine now lets assume you passed the property with name com
+        now as our autowiring is set to autoWiring is set to byName it will match what name is passed in contructor
+        and also what id we have passed in our bean and if you dont mention the property in contructor
+        then it spring autowire compares id which is com and comp1 to the ref variable name mentioned in Alien-->
+
+
+<!--    with this understanding now lets suppose i dont want spring to match id of bean and ref varilable name instead
+match the com variable type which is CAOMPUTER AND WHICH IS implmented by the Laptop and Desktop for this you can change
+autowire from byName to byType-->
+<!--    <bean id = "com1" class="org.trmab.Laptop">-->
+<!--    </bean>-->
+
+<!--    <bean id = "com2" class="org.trmab.Desktop">-->
+<!--    </bean>-->
+<!--     but even after this we are not able to use com1 and com2 together as they both have same type Computer autowire gets confuse to which implement to go for
+Desktop or laptop to resolve this we can use Primary like primary not working then go for default own
+ by again when we provide the property above primary will not overwrite it and go for what ever you passed in constructor ref-->
+    <bean id = "com1" class="org.trmab.Laptop" primary="true">
+    </bean>
+
+    <bean id = "com2" class="org.trmab.Desktop">
+    </bean>
+
+<!--    now other toic as i know that the di container creates the object if the scope is singleton which is bydefault
+for bean what if dont want to create it untill i call it for that you can pass lazy-init="true" so it will then only create once its called
+ <bean id = "com2" class="org.trmab.Desktop" lazy-init="true">
+    </bean>
+    calling in main be like
+
+    Desktop obj = (Desktop) context.getBean("com2);
+
+    also one more point  if we dont call it and write Desktop obj=... but pass the property in alien which is eager in that case the desktop
+    object will be created too as the eager is dependent on the lazy object
+-->
+</beans>
